@@ -2,6 +2,7 @@ package com.sugaradvisor.service;
 
 import com.sugaradvisor.domain.User;
 import com.sugaradvisor.dto.UserCreateRequest;
+import com.sugaradvisor.dto.UserUpdateRequest;
 import com.sugaradvisor.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,17 @@ public class UserService {
     public Mono<User> getUser(UUID userId) {
         return userRepository.findById(userId)
                 .switchIfEmpty(Mono.error(new RuntimeException("User not found: " + userId)));
+    }
+
+    public Mono<User> updateUser(UUID userId, UserUpdateRequest request) {
+        return userRepository.findById(userId)
+                .switchIfEmpty(Mono.error(new RuntimeException("User not found: " + userId)))
+                .flatMap(user -> {
+                    if (request.name() != null) user.setName(request.name());
+                    if (request.age() != null) user.setAge(request.age());
+                    if (request.weight() != null) user.setWeight(request.weight());
+                    if (request.dailySugarLimit() != null) user.setDailySugarLimit(request.dailySugarLimit());
+                    return userRepository.save(user);
+                });
     }
 }

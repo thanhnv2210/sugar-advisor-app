@@ -98,7 +98,12 @@
       "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -sdk iphoneos26.4 -destination 'id=27B7E6F4-2F84-5CFB-A858-A31ECD350909' -allowProvisioningUpdates build)",
       "Bash(plutil -p /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Info.plist)",
       "Bash(xcode-select -p)",
-      "Bash(sudo xcode-select:*)"
+      "Bash(sudo xcode-select:*)",
+      "Bash(USER_ID=\"1e9da9a4-1ae8-4df7-9c20-776ed6a6a741\" __NEW_LINE_0bed4d02394ca7f1__ echo \"=== PATCH /api/users/{id} — update daily limit to 35g ===\" curl -s -X PATCH http://localhost:8080/api/users/$USER_ID -H \"Content-Type: application/json\" -d '{\"\"\"\"dailySugarLimit\"\"\"\": 35}')",
+      "Bash(USER_ID=\"1e9da9a4-1ae8-4df7-9c20-776ed6a6a741\" MEMBER_ID=\"647806a3-c499-4edd-af77-42cf8d60d500\" __NEW_LINE_395387729c95f43d__ echo \"=== GET /api/users/{id}/family — list all ===\" curl -s http://localhost:8080/api/users/$USER_ID/family)",
+      "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== GET /api/users/{id}/family/{memberId} — single member ===\" curl -s http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID)",
+      "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== DELETE — remove child ===\" curl -s -o /dev/null -w \"HTTP %{http_code}\" -X DELETE http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID __NEW_LINE_395387729c95f43d__ echo \"\" echo \"\" echo \"=== GET after delete — should return empty or only spouse ===\" curl -s http://localhost:8080/api/users/$USER_ID/family)",
+      "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== GET deleted member — should 404 ===\" curl -s http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID)"
     ]
   }
 }

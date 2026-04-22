@@ -116,6 +116,12 @@ liquibase --defaults-file=src/main/resources/liquibase.properties update
 | GET | `/api/products/barcode/{barcode}` | Look up product (local DB → OpenFoodFacts fallback → Redis-cached 24h) |
 | POST | `/api/scan/ocr` | Extract info from label image (stubbed) |
 | POST | `/api/analysis/sugar` | Analyze sugar + give recommendation |
+| PATCH | `/api/users/{userId}` | Update profile / daily sugar limit |
+| POST | `/api/users/{userId}/family` | Add family member |
+| GET | `/api/users/{userId}/family` | List family members |
+| GET | `/api/users/{userId}/family/{memberId}` | Get single member |
+| PUT | `/api/users/{userId}/family/{memberId}` | Update member |
+| DELETE | `/api/users/{userId}/family/{memberId}` | Remove member |
 | POST | `/api/consumptions` | Record consumption |
 | GET | `/api/consumptions/{userId}` | Get consumption history |
 

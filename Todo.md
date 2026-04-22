@@ -19,6 +19,8 @@
 * [x] OCR scan endpoint (stubbed — provider pending)
 * [x] Swagger UI (http://localhost:8080/swagger-ui.html)
 * [x] Integrate OpenFoodFacts (fallback when barcode not in local DB — free, no API key)
+* [x] User update API (PATCH /api/users/{id} — name, age, weight, dailySugarLimit)
+* [x] Family member API (CRUD under /api/users/{id}/family)
 
 ---
 
