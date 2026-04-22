@@ -67,6 +67,31 @@ liquibase --defaults-file=liquibase.properties rollbackCount 1
 liquibase --defaults-file=liquibase.properties status
 ```
 
+## Logs
+
+**Foreground** (`./gradlew bootRun`) — logs stream directly to the terminal.
+
+**Background** (started with `nohup ... &`) — logs go to `/tmp/sugar-backend.log`:
+
+```bash
+# Follow live
+tail -f /tmp/sugar-backend.log
+
+# Last 100 lines
+tail -100 /tmp/sugar-backend.log
+
+# Errors only
+grep ERROR /tmp/sugar-backend.log
+
+# Filter by class/keyword
+grep "ProductService" /tmp/sugar-backend.log
+```
+
+To start in background and redirect logs:
+```bash
+nohup ./gradlew bootRun > /tmp/sugar-backend.log 2>&1 &
+```
+
 ## Health Check
 
 ```bash
