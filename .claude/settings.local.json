@@ -106,7 +106,9 @@
       "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== GET deleted member — should 404 ===\" curl -s http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID)",
       "Bash(USER_ID=\"83d537a4-c618-499d-be32-ba1d6385ed8c\" MEMBER_ID=\"2faf14fe-bdc5-40cf-a1f8-4fe61ce743e9\" __NEW_LINE_44c72c0cd5fea269__ echo \"=== GET /api/users/{userId}/summary/today ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/summary/today\")",
       "Bash(python3 -m json.tool __NEW_LINE_44c72c0cd5fea269__ echo \"\" echo \"=== GET /api/users/{userId}/family/{memberId}/consumptions ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID/consumptions\")",
-      "Bash(python3 -m json.tool __NEW_LINE_44c72c0cd5fea269__ echo \"\" echo \"=== GET /api/users/{userId}/family/{memberId}/summary/today ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID/summary/today\")"
+      "Bash(python3 -m json.tool __NEW_LINE_44c72c0cd5fea269__ echo \"\" echo \"=== GET /api/users/{userId}/family/{memberId}/summary/today ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID/summary/today\")",
+      "Bash(./gradlew test:*)",
+      "Bash(find /Users/ThanhNguyen/AI_WS/sugar-advisor-app/backend/build/test-results -name \"*.xml\" -exec grep -l \"testcase\" {})"
     ]
   }
 }
