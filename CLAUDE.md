@@ -154,7 +154,10 @@ Common issues and fixes in `backend/docs/troubleshooting/`:
 
 - **Phase 1 (MVP) — in progress**:
   - ✅ Backend API complete
-  - ✅ iOS SwiftUI app scaffolded (Dashboard, Scan, History, Launch screens)
+  - ✅ iOS SwiftUI app: Dashboard, Scan, History, Profile screens
+  - ✅ Camera barcode scanner (AVFoundation) with viewfinder overlay
+  - ✅ Profile screen — view + edit name, age, weight, daily sugar limit (PATCH)
+  - ✅ Debug shake-to-show API log panel (DEBUG builds only)
   - ✅ App runs on iPhone 17 Pro simulator and ThanhNguyen's physical iPhone 16 Pro (iOS 26.4)
   - ✅ Daily sugar summary endpoints (user + family member)
   - ✅ Family member consumption history endpoint

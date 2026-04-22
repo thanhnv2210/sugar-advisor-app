@@ -46,15 +46,18 @@ Also add to `Info.plist` to allow HTTP (non-HTTPS) connections:
 ```
 SugarAdvisor/
 ├── App/
-│   ├── SugarAdvisorApp.swift   entry point, bootstraps user session
-│   └── ContentView.swift       TabView (Dashboard / Scan / History)
+│   ├── SugarAdvisorApp.swift   entry point, shake-to-debug, bootstraps user session
+│   └── ContentView.swift       TabView (Dashboard / Scan / History / Profile)
 ├── Core/
 │   ├── Network/
-│   │   └── APIClient.swift     URLSession wrapper with async/await
+│   │   └── APIClient.swift     URLSession wrapper (GET, POST, PATCH) with request/response logging
 │   ├── Models/
 │   │   └── Models.swift        Codable request/response types
-│   └── Session/
-│       └── UserSession.swift   stores userId in UserDefaults, creates user on first launch
+│   ├── Session/
+│   │   └── UserSession.swift   stores userId in UserDefaults, creates user on first launch
+│   └── Debug/
+│       ├── APILogger.swift     in-memory log store (method, URL, req/res body, status, timestamp)
+│       └── DebugLogView.swift  shake-triggered log viewer (DEBUG only)
 └── Features/
     ├── Launch/
     │   └── LaunchView.swift    shown while bootstrapping user session
@@ -62,11 +65,15 @@ SugarAdvisor/
     │   ├── DashboardView.swift   today's sugar total, progress bar, intake list
     │   └── DashboardViewModel.swift
     ├── Scan/
-    │   ├── ScanView.swift        barcode input, product info, log consumption, analysis result
-    │   └── ScanViewModel.swift
-    └── History/
-        ├── HistoryView.swift     full consumption history list
-        └── HistoryViewModel.swift
+    │   ├── ScanView.swift           barcode input + camera scanner, product info, log consumption
+    │   ├── ScanViewModel.swift
+    │   └── BarcodeScannerView.swift AVFoundation camera scanner (UIViewControllerRepresentable)
+    ├── History/
+    │   ├── HistoryView.swift        full consumption history list
+    │   └── HistoryViewModel.swift
+    └── Profile/
+        ├── ProfileView.swift        edit name, age, weight, daily sugar limit with preset buttons
+        └── ProfileViewModel.swift   GET + PATCH /api/users/{userId}
 ```
 
 ## Start, Stop & Debug
@@ -101,6 +108,11 @@ SugarAdvisor/
 **SwiftUI canvas preview**
 - Open any `*View.swift` file → click **Resume** in the canvas panel, or press `Cmd + Option + P`.
 
+**Shake to view API logs (DEBUG builds only)**
+- Make some API calls, then physically shake the device (or use **Device → Shake** in the simulator menu)
+- A log panel appears showing every request and response with body, status code, and timestamp
+- Tap any row for full detail with pretty-printed JSON
+
 **Common errors**
 
 | Error | Fix |
@@ -118,9 +130,12 @@ SugarAdvisor/
 First launch → POST /api/users → store UUID in UserDefaults
      ↓
 Tab Bar
- ├── Dashboard  → GET /api/consumptions/{userId} → show today's total vs 50g limit
- ├── Scan       → GET /api/products/barcode/{barcode}
+ ├── Dashboard  → GET /api/consumptions/{userId} → show today's total vs daily limit
+ ├── Scan       → camera scanner or manual barcode entry
+ │               → GET /api/products/barcode/{barcode}
  │               → POST /api/consumptions
  │               → POST /api/analysis/sugar → show recommendation
- └── History    → GET /api/consumptions/{userId} → full list
+ ├── History    → GET /api/consumptions/{userId} → full list
+ └── Profile    → GET /api/users/{userId} → display profile
+                → PATCH /api/users/{userId} → save name, age, weight, daily limit
 ```

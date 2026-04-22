@@ -10,8 +10,26 @@ extension Notification.Name {
 class ShakeViewController: UIViewController {
     override var canBecomeFirstResponder: Bool { true }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .clear
+        view.isUserInteractionEnabled = false
+        // Re-grab first responder whenever the keyboard disappears
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(regain),
+            name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(regain),
+            name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        becomeFirstResponder()
+    }
+
+    @objc private func regain() {
+        guard !isFirstResponder else { return }
         becomeFirstResponder()
     }
 
@@ -44,7 +62,7 @@ struct SugarAdvisorApp: App {
                 }
             }
             .environmentObject(session)
-            .background(ShakeDetector().frame(width: 0, height: 0))
+            .overlay(ShakeDetector().allowsHitTesting(false).ignoresSafeArea())
             .onReceive(NotificationCenter.default.publisher(for: .deviceDidShake)) { _ in
                 #if DEBUG
                 showDebugLog = true

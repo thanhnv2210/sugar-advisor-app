@@ -15,6 +15,13 @@ struct UserResponse: Decodable {
     let dailySugarLimit: Double?
 }
 
+struct UpdateUserRequest: Encodable {
+    let name: String?
+    let age: Int?
+    let weight: Double?
+    let dailySugarLimit: Double?
+}
+
 // MARK: - Product
 struct ProductResponse: Decodable {
     let id: UUID

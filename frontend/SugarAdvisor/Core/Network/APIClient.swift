@@ -59,6 +59,28 @@ class APIClient {
         }
     }
 
+    func patch<T: Decodable, B: Encodable>(_ path: String, body: B) async throws -> T {
+        let url = try makeURL(path)
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let bodyData = try encoder.encode(body)
+        request.httpBody = bodyData
+        let requestBodyString = String(data: bodyData, encoding: .utf8)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let code = (response as? HTTPURLResponse)?.statusCode
+            await APILogger.shared.log(method: "PATCH", url: url.absoluteString, requestBody: requestBodyString,
+                                       statusCode: code, responseBody: String(data: data, encoding: .utf8), error: nil)
+            try validate(response)
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            await APILogger.shared.log(method: "PATCH", url: url.absoluteString, requestBody: requestBodyString,
+                                       statusCode: nil, responseBody: nil, error: error.localizedDescription)
+            throw error
+        }
+    }
+
     private func makeURL(_ path: String) throws -> URL {
         guard let url = URL(string: baseURL + path) else {
             throw APIError.invalidURL
