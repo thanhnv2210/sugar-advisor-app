@@ -1,0 +1,32 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet id="005-consumptions" author="thanh">
+        <sql>
+            CREATE TABLE sugar_advisor.consumptions (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID NOT NULL,
+                family_member_id UUID,
+                product_id UUID,
+                sugar_amount DECIMAL(6,2) NOT NULL,
+                consumed_at TIMESTAMP DEFAULT NOW(),
+
+                CONSTRAINT fk_consumption_user
+                    FOREIGN KEY (user_id)
+                    REFERENCES sugar_advisor.users(id),
+
+                CONSTRAINT fk_consumption_family
+                    FOREIGN KEY (family_member_id)
+                    REFERENCES sugar_advisor.family_members(id),
+
+                CONSTRAINT fk_consumption_product
+                    FOREIGN KEY (product_id)
+                    REFERENCES sugar_advisor.products(id)
+            );
+        </sql>
+
+        <rollback>
+            DROP TABLE IF EXISTS sugar_advisor.consumptions;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

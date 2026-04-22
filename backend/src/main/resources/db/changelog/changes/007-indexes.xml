@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet id="007-indexes" author="thanh">
+        <sql>
+            CREATE INDEX idx_consumptions_user_time
+            ON sugar_advisor.consumptions (user_id, consumed_at DESC);
+
+            CREATE INDEX idx_consumptions_family
+            ON sugar_advisor.consumptions (family_member_id, consumed_at DESC);
+
+            CREATE INDEX idx_analysis_user_time
+            ON sugar_advisor.sugar_analysis (user_id, created_at DESC);
+        </sql>
+
+        <rollback>
+            DROP INDEX IF EXISTS sugar_advisor.idx_consumptions_user_time;
+            DROP INDEX IF EXISTS sugar_advisor.idx_consumptions_family;
+            DROP INDEX IF EXISTS sugar_advisor.idx_analysis_user_time;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

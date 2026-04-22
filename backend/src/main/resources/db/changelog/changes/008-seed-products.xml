@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <changeSet id="008-seed-products" author="thanh">
+
+        <!-- 🥤 Soft Drinks -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Coca-Cola Original"/>
+            <column name="brand" value="Coca-Cola"/>
+            <column name="barcode" value="5449000000996"/>
+            <column name="sugar_per_100g" valueNumeric="10.6"/>
+            <column name="ingredients" value="Carbonated water, sugar, caramel colour, phosphoric acid, natural flavours"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Pepsi Regular"/>
+            <column name="brand" value="PepsiCo"/>
+            <column name="barcode" value="4902430182071"/>
+            <column name="sugar_per_100g" valueNumeric="11.0"/>
+            <column name="ingredients" value="Carbonated water, sugar, acidity regulators, flavourings"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <!-- 🧃 Juices -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Minute Maid Orange Juice"/>
+            <column name="brand" value="Coca-Cola"/>
+            <column name="barcode" value="5449000001528"/>
+            <column name="sugar_per_100g" valueNumeric="9.2"/>
+            <column name="ingredients" value="Orange juice from concentrate, sugar, vitamin C"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Tropicana Orange Juice"/>
+            <column name="brand" value="Tropicana"/>
+            <column name="barcode" value="048500001234"/>
+            <column name="sugar_per_100g" valueNumeric="8.5"/>
+            <column name="ingredients" value="Orange juice, natural flavour"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <!-- 🍫 Snacks -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="KitKat Milk Chocolate"/>
+            <column name="brand" value="Nestlé"/>
+            <column name="barcode" value="7613034621144"/>
+            <column name="sugar_per_100g" valueNumeric="50.0"/>
+            <column name="ingredients" value="Sugar, wheat flour, cocoa butter, milk solids"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Snickers Bar"/>
+            <column name="brand" value="Mars"/>
+            <column name="barcode" value="5000159461127"/>
+            <column name="sugar_per_100g" valueNumeric="47.8"/>
+            <column name="ingredients" value="Sugar, peanuts, glucose syrup, milk chocolate"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <!-- 🍪 Biscuits -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Oreo Cookies"/>
+            <column name="brand" value="Mondelez"/>
+            <column name="barcode" value="7622300850107"/>
+            <column name="sugar_per_100g" valueNumeric="38.0"/>
+            <column name="ingredients" value="Sugar, wheat flour, palm oil, cocoa"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <!-- 🍓 Yogurt -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Yoplait Strawberry Yogurt"/>
+            <column name="brand" value="Yoplait"/>
+            <column name="barcode" value="3228021010302"/>
+            <column name="sugar_per_100g" valueNumeric="12.5"/>
+            <column name="ingredients" value="Milk, sugar, strawberry puree, cultures"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <!-- 🥛 Milk -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Meiji Fresh Milk"/>
+            <column name="brand" value="Meiji"/>
+            <column name="barcode" value="4902705094114"/>
+            <column name="sugar_per_100g" valueNumeric="5.0"/>
+            <column name="ingredients" value="Fresh milk"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+        <!-- 🧃 Energy Drink -->
+        <insert tableName="products">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Red Bull Energy Drink"/>
+            <column name="brand" value="Red Bull"/>
+            <column name="barcode" value="9002490100070"/>
+            <column name="sugar_per_100g" valueNumeric="11.0"/>
+            <column name="ingredients" value="Water, sugar, caffeine, taurine, B-group vitamins"/>
+            <column name="source" value="SEED"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

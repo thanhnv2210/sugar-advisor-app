@@ -1,0 +1,258 @@
+openapi: 3.0.3
+info:
+title: Sugar Advisor API
+description: API for sugar awareness, product scanning, and consumption tracking
+version: 1.0.0
+
+servers:
+
+* url: http://localhost:8080/api
+
+tags:
+
+* name: User
+* name: Product
+* name: Scan
+* name: Consumption
+* name: Analysis
+
+paths:
+
+/users:
+post:
+tags: [User]
+summary: Create user profile
+requestBody:
+required: true
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/UserCreateRequest'
+responses:
+'201':
+description: User created
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/User'
+
+/users/{userId}:
+get:
+tags: [User]
+summary: Get user profile
+parameters:
+- name: userId
+in: path
+required: true
+schema:
+type: string
+responses:
+'200':
+description: User profile
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/User'
+
+/products/barcode/{barcode}:
+get:
+tags: [Product]
+summary: Get product by barcode
+parameters:
+- name: barcode
+in: path
+required: true
+schema:
+type: string
+responses:
+'200':
+description: Product found
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/Product'
+'404':
+description: Product not found
+
+/scan/ocr:
+post:
+tags: [Scan]
+summary: Extract product info from label image
+requestBody:
+required: true
+content:
+application/json:
+schema:
+type: object
+required: [imageBase64]
+properties:
+imageBase64:
+type: string
+responses:
+'200':
+description: OCR extracted data
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/OCRResponse'
+
+/analysis/sugar:
+post:
+tags: [Analysis]
+summary: Analyze sugar content and give recommendation
+requestBody:
+required: true
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/SugarAnalysisRequest'
+responses:
+'200':
+description: Sugar analysis result
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/SugarAnalysisResponse'
+
+/consumptions:
+post:
+tags: [Consumption]
+summary: Track user consumption
+requestBody:
+required: true
+content:
+application/json:
+schema:
+$ref: '#/components/schemas/ConsumptionRequest'
+responses:
+'201':
+description: Consumption recorded
+
+/consumptions/{userId}:
+get:
+tags: [Consumption]
+summary: Get consumption history
+parameters:
+- name: userId
+in: path
+required: true
+schema:
+type: string
+responses:
+'200':
+description: Consumption list
+content:
+application/json:
+schema:
+type: array
+items:
+$ref: '#/components/schemas/Consumption'
+
+components:
+
+schemas:
+
+```
+User:
+  type: object
+  properties:
+    id:
+      type: string
+    name:
+      type: string
+    age:
+      type: integer
+    weight:
+      type: number
+    dailySugarLimit:
+      type: number
+
+UserCreateRequest:
+  type: object
+  required: [name, age]
+  properties:
+    name:
+      type: string
+    age:
+      type: integer
+    weight:
+      type: number
+
+Product:
+  type: object
+  properties:
+    id:
+      type: string
+    name:
+      type: string
+    brand:
+      type: string
+    sugarPer100g:
+      type: number
+    ingredients:
+      type: string
+
+OCRResponse:
+  type: object
+  properties:
+    rawText:
+      type: string
+    ingredients:
+      type: string
+    detectedSugarKeywords:
+      type: array
+      items:
+        type: string
+
+SugarAnalysisRequest:
+  type: object
+  required: [userId]
+  properties:
+    userId:
+      type: string
+    productId:
+      type: string
+    sugarAmount:
+      type: number
+    ingredients:
+      type: string
+
+SugarAnalysisResponse:
+  type: object
+  properties:
+    sugarLevel:
+      type: string
+      enum: [LOW, MEDIUM, HIGH]
+    isExceedLimit:
+      type: boolean
+    remainingSugar:
+      type: number
+    recommendation:
+      type: string
+
+ConsumptionRequest:
+  type: object
+  required: [userId, sugarAmount]
+  properties:
+    userId:
+      type: string
+    productId:
+      type: string
+    sugarAmount:
+      type: number
+
+Consumption:
+  type: object
+  properties:
+    id:
+      type: string
+    userId:
+      type: string
+    productId:
+      type: string
+    sugarAmount:
+      type: number
+    timestamp:
+      type: string
+      format: date-time
+```

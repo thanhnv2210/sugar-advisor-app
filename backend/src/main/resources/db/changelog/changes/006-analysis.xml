@@ -1,0 +1,23 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet id="006-analysis" author="thanh">
+        <sql>
+            CREATE TABLE sugar_advisor.sugar_analysis (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID NOT NULL,
+                product_id UUID,
+                sugar_amount DECIMAL(6,2),
+                sugar_level VARCHAR(10),
+                is_exceed_limit BOOLEAN,
+                remaining_sugar DECIMAL(6,2),
+                recommendation TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            );
+        </sql>
+
+        <rollback>
+            DROP TABLE IF EXISTS sugar_advisor.sugar_analysis;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

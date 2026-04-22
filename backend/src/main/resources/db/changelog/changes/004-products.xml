@@ -1,0 +1,25 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+
+    <changeSet id="004-products" author="thanh">
+        <sql>
+            CREATE TABLE sugar_advisor.products (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                name VARCHAR(255),
+                brand VARCHAR(255),
+                barcode VARCHAR(50),
+                sugar_per_100g DECIMAL(6,2),
+                ingredients TEXT,
+                source VARCHAR(50),
+                created_at TIMESTAMP DEFAULT NOW()
+            );
+
+            ALTER TABLE sugar_advisor.products
+            ADD CONSTRAINT uq_products_barcode UNIQUE (barcode);
+        </sql>
+
+        <rollback>
+            DROP TABLE IF EXISTS sugar_advisor.products;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
