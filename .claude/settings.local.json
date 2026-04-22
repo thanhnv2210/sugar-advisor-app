@@ -72,7 +72,13 @@
       "Bash(python3 -m json.tool __NEW_LINE_19114daf9f4a5a20__ echo \"\" echo \"=== POST /api/analysis/sugar \\(50g - HIGH + exceed limit\\) ===\" curl -s -X POST http://localhost:8080/api/analysis/sugar -H \"Content-Type: application/json\" -d \"{\"\"userId\"\":\"\"$USER_ID\"\",\"\"sugarAmount\"\":50}\")",
       "Bash(python3 -m json.tool __NEW_LINE_19114daf9f4a5a20__ echo \"\" echo \"=== POST /api/consumptions ===\" curl -s -X POST http://localhost:8080/api/consumptions -H \"Content-Type: application/json\" -d \"{\"\"userId\"\":\"\"$USER_ID\"\",\"\"sugarAmount\"\":10.6}\")",
       "Bash(python3 -m json.tool __NEW_LINE_19114daf9f4a5a20__ echo \"\" echo \"=== GET /api/consumptions/{userId} ===\" curl -s http://localhost:8080/api/consumptions/$USER_ID)",
-      "Bash(python3 -m json.tool __NEW_LINE_19114daf9f4a5a20__ echo \"\" echo \"=== POST /api/scan/ocr ===\" curl -s -X POST http://localhost:8080/api/scan/ocr -H \"Content-Type: application/json\" -d '{\"\"\"\"imageBase64\"\"\"\":\"\"\"\"dGVzdA==\"\"\"\"}')"
+      "Bash(python3 -m json.tool __NEW_LINE_19114daf9f4a5a20__ echo \"\" echo \"=== POST /api/scan/ocr ===\" curl -s -X POST http://localhost:8080/api/scan/ocr -H \"Content-Type: application/json\" -d '{\"\"\"\"imageBase64\"\"\"\":\"\"\"\"dGVzdA==\"\"\"\"}')",
+      "Bash(curl -s \"https://world.openfoodfacts.org/api/v0/product/7622300850107.json\")",
+      "Bash(curl -s \"https://world.openfoodfacts.org/api/v2/product/5449000000996\")",
+      "Bash(curl -s \"https://world.openfoodfacts.org/api/v2/product/4001686327662\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''status:'''', d.get\\(''''status''''\\)\\)\")",
+      "Bash(curl -s -w \"\\\\nHTTP_CODE:%{http_code}\" \"https://world.openfoodfacts.org/api/v2/product/3017620422003\")",
+      "Bash(python3 -m json.tool __NEW_LINE_a13694b79bb40c55__ echo \"\" echo \"=== Nutella 2nd call \\(should be Redis cache now\\) ===\" curl -s http://localhost:8080/api/products/barcode/3017620422003)"
     ]
   }
 }

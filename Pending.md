@@ -31,10 +31,6 @@ Decisions that are deferred and need to be resolved before implementing the rela
 
 ---
 
-## 3. OpenFoodFacts Integration
+## 3. ~~OpenFoodFacts Integration~~ ✅ Implemented
 
-**Context**: When a barcode is not found in the local `products` table, the plan is to fall back to the OpenFoodFacts public API.
-
-**Impact**: Affects `ProductService` — needs HTTP client (WebClient) to fetch and cache external product data.
-
-**Current approach**: Returns 404 if barcode not in local DB.
+Resolved — OpenFoodFacts is free/open-source, no API key required. Implemented in `ProductService` with `OpenFoodFactsClient`. Products fetched from OpenFoodFacts are saved to local DB and cached in Redis.

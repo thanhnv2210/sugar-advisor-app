@@ -13,7 +13,7 @@ Sugar Advisor App — a mobile-first application for sugar awareness. Users can 
 - **Backend**: Java 17, Spring Boot WebFlux 3.2.5, Gradle 8.8, PostgreSQL (R2DBC), Redis, Liquibase
 - **Frontend**: iOS (SwiftUI) — not yet started
 - **AI**: OCR + ingredient parsing — provider pending (see `Pending.md`)
-- **External**: OpenFoodFacts API — pending (see `Pending.md`)
+- **External**: OpenFoodFacts API (free, no key) — `client/OpenFoodFactsClient.java`
 - **API docs**: Swagger UI at `http://localhost:8080/swagger-ui.html`
 - **API contracts**: `shared/api-contracts/openapi.yaml`
 
@@ -86,7 +86,7 @@ liquibase --defaults-file=src/main/resources/liquibase.properties update
 |--------|------|---------|
 | POST | `/api/users` | Create user profile |
 | GET | `/api/users/{userId}` | Get user profile |
-| GET | `/api/products/barcode/{barcode}` | Look up product (Redis-cached 24h) |
+| GET | `/api/products/barcode/{barcode}` | Look up product (local DB → OpenFoodFacts fallback → Redis-cached 24h) |
 | POST | `/api/scan/ocr` | Extract info from label image (stubbed) |
 | POST | `/api/analysis/sugar` | Analyze sugar + give recommendation |
 | POST | `/api/consumptions` | Record consumption |

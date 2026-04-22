@@ -18,7 +18,7 @@
 * [x] Sugar analysis (LOW/MEDIUM/HIGH, budget tracking, recommendation)
 * [x] OCR scan endpoint (stubbed — provider pending)
 * [x] Swagger UI (http://localhost:8080/swagger-ui.html)
-* [ ] Integrate OpenFoodFacts (fallback when barcode not in local DB — see Pending.md)
+* [x] Integrate OpenFoodFacts (fallback when barcode not in local DB — free, no API key)
 
 ---
 
