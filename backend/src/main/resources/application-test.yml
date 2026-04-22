@@ -1,0 +1,15 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/sugar_advisor_test
+    username: postgres
+    password: postgres
+
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/sugar_advisor_test
+    user: postgres
+    password: postgres
+
+  data:
+    redis:
+      host: localhost
+      port: 6379

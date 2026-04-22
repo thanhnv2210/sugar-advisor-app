@@ -55,11 +55,32 @@ PostgreSQL with Liquibase migrations in `backend/src/main/resources/db/changelog
 
 ## Running Locally
 
+**Start infrastructure** (PostgreSQL + Redis):
 ```bash
 docker-compose up
 ```
 
-Prerequisites: Docker, Java 8+, Xcode (for iOS frontend)
+**Backend** (from `backend/`):
+```bash
+# First time — generate the Gradle wrapper
+gradle wrapper
+
+# Build
+./gradlew build
+
+# Run
+./gradlew bootRun
+
+# Test
+./gradlew test
+
+# Single test class
+./gradlew test --tests "com.sugaradvisor.SugarAdvisorApplicationTests"
+```
+
+API available at `http://localhost:8080/api`
+
+Prerequisites: Docker, Java 17, Gradle, Xcode (iOS frontend)
 
 ## Development Phases
 

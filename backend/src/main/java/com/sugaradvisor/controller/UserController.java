@@ -1,0 +1,31 @@
+package com.sugaradvisor.controller;
+
+import com.sugaradvisor.dto.UserCreateRequest;
+import com.sugaradvisor.dto.UserResponse;
+import com.sugaradvisor.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<UserResponse> createUser(@Valid @RequestBody UserCreateRequest request) {
+        return userService.createUser(request).map(UserResponse::from);
+    }
+
+    @GetMapping("/{userId}")
+    public Mono<UserResponse> getUser(@PathVariable UUID userId) {
+        return userService.getUser(userId).map(UserResponse::from);
+    }
+}

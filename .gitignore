@@ -1,0 +1,52 @@
+# Gradle
+.gradle/
+build/
+backend/.gradle/
+backend/build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+*.env
+
+# Java
+*.class
+*.jar
+*.war
+hs_err_pid*
+
+# Spring Boot
+HELP.md
+
+# iOS / Xcode
+frontend/*.xcworkspace/
+frontend/Pods/
+frontend/.build/
+*.xcuserstate
+DerivedData/
+*.ipa
+
+# Docker
+docker-compose.override.yml
+
+# Claude
+.claude/settings.local.json

@@ -13,5 +13,6 @@
     <include file="db/changelog/changes/005-consumptions.xml"/>
     <include file="db/changelog/changes/006-analysis.xml"/>
     <include file="db/changelog/changes/007-indexes.xml"/>
+    <include file="db/changelog/changes/008-seed-products.xml"/>
 
 </databaseChangeLog>
