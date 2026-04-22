@@ -74,6 +74,13 @@ curl http://localhost:8080/actuator/health
 # → {"status":"UP"}
 ```
 
+## Swagger UI
+
+Open in browser after starting the app:
+
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
+- **OpenAPI JSON**: http://localhost:8080/v3/api-docs
+
 ## Environment Variables
 
 All have sensible defaults for local development.
