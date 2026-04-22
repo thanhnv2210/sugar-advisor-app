@@ -1,20 +1,24 @@
-# ✅ TODO List
+# TODO List
 
 ## 🧱 Setup
 
-* [ ] Initialize GitHub repo
-* [ ] Setup monorepo structure
-* [ ] Configure Docker
+* [x] Initialize GitHub repo
+* [x] Setup monorepo structure
+* [x] Configure Docker (Redis via docker-compose.yml)
 
 ---
 
 ## ⚙️ Backend
 
-* [ ] Create Spring Boot project
-* [ ] User API
-* [ ] Product API
-* [ ] Consumption tracking
-* [ ] Integrate OpenFoodFacts
+* [x] Create Spring Boot WebFlux project (Java 17, Gradle 8.8)
+* [x] Liquibase migrations (schema, users, family, products, consumptions, analysis, indexes, seed data)
+* [x] User API (create, get)
+* [x] Product API (lookup by barcode, Redis cache)
+* [x] Consumption tracking (record, history, daily total)
+* [x] Sugar analysis (LOW/MEDIUM/HIGH, budget tracking, recommendation)
+* [x] OCR scan endpoint (stubbed — provider pending)
+* [x] Swagger UI (http://localhost:8080/swagger-ui.html)
+* [ ] Integrate OpenFoodFacts (fallback when barcode not in local DB — see Pending.md)
 
 ---
 
@@ -29,7 +33,7 @@
 
 ## 🤖 AI Layer
 
-* [ ] Integrate OCR API
+* [ ] Integrate OCR API (provider pending — see Pending.md)
 * [ ] Build ingredient parser
 * [ ] Create sugar dictionary
 * [ ] Sugar estimation logic
@@ -62,4 +66,4 @@
 
 ## 🎯 MVP Goal
 
-👉 “User can scan a product and know if they should consume it”
+👉 "User can scan a product and know if they should consume it"
