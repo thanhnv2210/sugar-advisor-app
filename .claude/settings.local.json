@@ -78,7 +78,27 @@
       "Bash(curl -s \"https://world.openfoodfacts.org/api/v2/product/4001686327662\")",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''status:'''', d.get\\(''''status''''\\)\\)\")",
       "Bash(curl -s -w \"\\\\nHTTP_CODE:%{http_code}\" \"https://world.openfoodfacts.org/api/v2/product/3017620422003\")",
-      "Bash(python3 -m json.tool __NEW_LINE_a13694b79bb40c55__ echo \"\" echo \"=== Nutella 2nd call \\(should be Redis cache now\\) ===\" curl -s http://localhost:8080/api/products/barcode/3017620422003)"
+      "Bash(python3 -m json.tool __NEW_LINE_a13694b79bb40c55__ echo \"\" echo \"=== Nutella 2nd call \\(should be Redis cache now\\) ===\" curl -s http://localhost:8080/api/products/barcode/3017620422003)",
+      "Bash(open:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -destination 'platform=iOS Simulator,id=E72627DD-965B-4FFA-B203-5E882C023491' build)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -destination 'platform=iOS Simulator,id=E72627DD-965B-4FFA-B203-5E882C023491' -derivedDataPath /tmp/sugar-build run)",
+      "Bash(xcrun xctrace:*)",
+      "Bash(xcrun devicectl:*)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -destination 'platform=iOS,id=27B7E6F4-2F84-5CFB-A858-A31ECD350909' build)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -destination 'platform=iOS,id=27B7E6F4-2F84-5CFB-A858-A31ECD350909' -allowProvisioningUpdates build)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -destination 'id=27B7E6F4-2F84-5CFB-A858-A31ECD350909' -allowProvisioningUpdates build)",
+      "Bash(xcodebuild -version)",
+      "Bash(xcrun --sdk iphoneos --show-sdk-version)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -destination 'platform=iOS,id=00008140-00065D441180801C' -allowProvisioningUpdates build)",
+      "Bash(xcodebuild -showsdks)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -sdk iphoneos26.4 -destination 'platform=iOS,id=00008140-00065D441180801C' -allowProvisioningUpdates build)",
+      "Read(//Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/**)",
+      "Read(//Library/Developer/CoreSimulator/Profiles/**)",
+      "Bash(xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor -sdk iphoneos26.4 -destination 'id=27B7E6F4-2F84-5CFB-A858-A31ECD350909' -allowProvisioningUpdates build)",
+      "Bash(plutil -p /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Info.plist)",
+      "Bash(xcode-select -p)",
+      "Bash(sudo xcode-select:*)"
     ]
   }
 }

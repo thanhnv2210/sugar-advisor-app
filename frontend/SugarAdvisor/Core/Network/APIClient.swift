@@ -5,7 +5,7 @@ class APIClient {
 
     // For simulator use localhost. For physical device, replace with your Mac's local IP.
     // e.g. "http://192.168.1.x:8080/api"
-    private let baseURL = "http://localhost:8080/api"
+    private let baseURL = "http://192.168.1.3:8080/api"
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
