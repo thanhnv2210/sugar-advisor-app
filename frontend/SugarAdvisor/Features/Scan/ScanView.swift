@@ -1,8 +1,10 @@
 import SwiftUI
+import AVFoundation
 
 struct ScanView: View {
     @EnvironmentObject var session: UserSession
     @StateObject private var vm = ScanViewModel()
+    @State private var showingScanner = false
 
     var body: some View {
         NavigationStack {
@@ -23,16 +25,41 @@ struct ScanView: View {
                 .padding()
             }
             .navigationTitle("Scan")
+            .sheet(isPresented: $showingScanner) {
+                ScannerSheet(onScanned: { code in
+                    showingScanner = false
+                    vm.barcode = code
+                    Task { await vm.lookupProduct() }
+                })
+            }
         }
     }
 
     // MARK: - Barcode Input
     private var barcodeInputCard: some View {
         VStack(spacing: 12) {
+            // Camera scan button
+            Button {
+                showingScanner = true
+            } label: {
+                HStack {
+                    Image(systemName: "barcode.viewfinder")
+                        .font(.title2)
+                    Text("Scan Barcode")
+                        .fontWeight(.semibold)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+
+            // Manual entry row
             HStack {
                 Image(systemName: "barcode")
                     .foregroundColor(.secondary)
-                TextField("Enter barcode", text: $vm.barcode)
+                TextField("Or enter barcode manually", text: $vm.barcode)
                     .keyboardType(.numberPad)
                     .submitLabel(.search)
                     .onSubmit { Task { await vm.lookupProduct() } }
@@ -169,6 +196,27 @@ struct ScanView: View {
         .padding()
         .background(Color.red.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+// MARK: - Scanner Sheet
+
+struct ScannerSheet: View {
+    let onScanned: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            BarcodeScannerView(onScanned: onScanned)
+                .ignoresSafeArea()
+                .navigationTitle("Point at a barcode")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { dismiss() }
+                    }
+                }
+        }
     }
 }
 

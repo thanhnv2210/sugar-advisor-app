@@ -23,9 +23,18 @@ class APIClient {
 
     func get<T: Decodable>(_ path: String) async throws -> T {
         let url = try makeURL(path)
-        let (data, response) = try await URLSession.shared.data(from: url)
-        try validate(response)
-        return try decoder.decode(T.self, from: data)
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            let code = (response as? HTTPURLResponse)?.statusCode
+            await APILogger.shared.log(method: "GET", url: url.absoluteString, requestBody: nil,
+                                       statusCode: code, responseBody: String(data: data, encoding: .utf8), error: nil)
+            try validate(response)
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            await APILogger.shared.log(method: "GET", url: url.absoluteString, requestBody: nil,
+                                       statusCode: nil, responseBody: nil, error: error.localizedDescription)
+            throw error
+        }
     }
 
     func post<T: Decodable, B: Encodable>(_ path: String, body: B) async throws -> T {
@@ -33,10 +42,21 @@ class APIClient {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try encoder.encode(body)
-        let (data, response) = try await URLSession.shared.data(for: request)
-        try validate(response)
-        return try decoder.decode(T.self, from: data)
+        let bodyData = try encoder.encode(body)
+        request.httpBody = bodyData
+        let requestBodyString = String(data: bodyData, encoding: .utf8)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let code = (response as? HTTPURLResponse)?.statusCode
+            await APILogger.shared.log(method: "POST", url: url.absoluteString, requestBody: requestBodyString,
+                                       statusCode: code, responseBody: String(data: data, encoding: .utf8), error: nil)
+            try validate(response)
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            await APILogger.shared.log(method: "POST", url: url.absoluteString, requestBody: requestBodyString,
+                                       statusCode: nil, responseBody: nil, error: error.localizedDescription)
+            throw error
+        }
     }
 
     private func makeURL(_ path: String) throws -> URL {
