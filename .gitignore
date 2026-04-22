@@ -28,6 +28,10 @@ logs/
 .env.local
 *.env
 
+# Liquibase local config (contains credentials)
+liquibase.properties
+**/liquibase.properties
+
 # Java
 *.class
 *.jar

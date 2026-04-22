@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -E \"^[^.]+$\")"
+      "Bash(grep -E \"^[^.]+$\")",
+      "Bash(liquibase --version)",
+      "Bash(gradle --version)",
+      "Bash(liquibase --defaults-file=src/main/resources/liquibase.properties --search-path=src/main/resources update)",
+      "Bash(PGPASSWORD=admin psql -h localhost -p 54320 -U admin -c \"CREATE DATABASE sugar_advisor;\")",
+      "Bash(PGPASSWORD=admin psql -h localhost -p 54320 -U admin -d sugar_advisor -c \"CREATE SCHEMA IF NOT EXISTS sugar_advisor;\")",
+      "Bash(liquibase --defaults-file=liquibase.properties update)",
+      "Bash(for f:*)",
+      "Bash(do head:*)",
+      "Bash(done)",
+      "Bash(do)",
+      "Bash(sed -i '' 's|<databaseChangeLog xmlns=\"\"http://www.liquibase.org/xml/ns/dbchangelog\"\">|<databaseChangeLog\\\\n    xmlns=\"\"http://www.liquibase.org/xml/ns/dbchangelog\"\"\\\\n    xmlns:xsi=\"\"http://www.w3.org/2001/XMLSchema-instance\"\"\\\\n    xsi:schemaLocation=\"\"http://www.liquibase.org/xml/ns/dbchangelog\\\\n        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd\"\">|' \"$f\")"
     ]
   }
 }

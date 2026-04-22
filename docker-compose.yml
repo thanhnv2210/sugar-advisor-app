@@ -1,23 +1,10 @@
 version: '3.8'
 
-services:
-  postgres:
-    image: postgres:15
-    container_name: sugar-advisor-postgres
-    environment:
-      POSTGRES_DB: sugar_advisor
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+# PostgreSQL is not managed here — reuse an existing local instance.
+# Create the database manually: CREATE DATABASE sugar_advisor;
+# Then set DB_HOST, DB_PORT, DB_USER, DB_PASSWORD env vars as needed.
 
+services:
   redis:
     image: redis:7-alpine
     container_name: sugar-advisor-redis
@@ -28,6 +15,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-volumes:
-  postgres_data:

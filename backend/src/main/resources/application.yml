@@ -3,14 +3,14 @@ spring:
     name: sugar-advisor-backend
 
   r2dbc:
-    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sugar_advisor}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:54320}/${DB_NAME:sugar_advisor}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:admin}
 
   liquibase:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sugar_advisor}
-    user: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:54320}/${DB_NAME:sugar_advisor}
+    user: ${DB_USER:admin}
+    password: ${DB_PASSWORD:admin}
     change-log: classpath:db/changelog/db.changelog-master.xml
     default-schema: sugar_advisor
 
