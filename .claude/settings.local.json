@@ -103,7 +103,10 @@
       "Bash(USER_ID=\"1e9da9a4-1ae8-4df7-9c20-776ed6a6a741\" MEMBER_ID=\"647806a3-c499-4edd-af77-42cf8d60d500\" __NEW_LINE_395387729c95f43d__ echo \"=== GET /api/users/{id}/family — list all ===\" curl -s http://localhost:8080/api/users/$USER_ID/family)",
       "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== GET /api/users/{id}/family/{memberId} — single member ===\" curl -s http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID)",
       "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== DELETE — remove child ===\" curl -s -o /dev/null -w \"HTTP %{http_code}\" -X DELETE http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID __NEW_LINE_395387729c95f43d__ echo \"\" echo \"\" echo \"=== GET after delete — should return empty or only spouse ===\" curl -s http://localhost:8080/api/users/$USER_ID/family)",
-      "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== GET deleted member — should 404 ===\" curl -s http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID)"
+      "Bash(python3 -m json.tool __NEW_LINE_395387729c95f43d__ echo \"\" echo \"=== GET deleted member — should 404 ===\" curl -s http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID)",
+      "Bash(USER_ID=\"83d537a4-c618-499d-be32-ba1d6385ed8c\" MEMBER_ID=\"2faf14fe-bdc5-40cf-a1f8-4fe61ce743e9\" __NEW_LINE_44c72c0cd5fea269__ echo \"=== GET /api/users/{userId}/summary/today ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/summary/today\")",
+      "Bash(python3 -m json.tool __NEW_LINE_44c72c0cd5fea269__ echo \"\" echo \"=== GET /api/users/{userId}/family/{memberId}/consumptions ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID/consumptions\")",
+      "Bash(python3 -m json.tool __NEW_LINE_44c72c0cd5fea269__ echo \"\" echo \"=== GET /api/users/{userId}/family/{memberId}/summary/today ===\" curl -s \"http://localhost:8080/api/users/$USER_ID/family/$MEMBER_ID/summary/today\")"
     ]
   }
 }

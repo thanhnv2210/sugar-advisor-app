@@ -124,6 +124,9 @@ liquibase --defaults-file=src/main/resources/liquibase.properties update
 | DELETE | `/api/users/{userId}/family/{memberId}` | Remove member |
 | POST | `/api/consumptions` | Record consumption |
 | GET | `/api/consumptions/{userId}` | Get consumption history |
+| GET | `/api/users/{userId}/summary/today` | Daily sugar summary (total, limit, remaining, status) |
+| GET | `/api/users/{userId}/family/{memberId}/consumptions` | Consumption history for a family member |
+| GET | `/api/users/{userId}/family/{memberId}/summary/today` | Daily sugar summary for a family member |
 
 ## Important Implementation Notes
 
@@ -153,6 +156,8 @@ Common issues and fixes in `backend/docs/troubleshooting/`:
   - ✅ Backend API complete
   - ✅ iOS SwiftUI app scaffolded (Dashboard, Scan, History, Launch screens)
   - ✅ App runs on iPhone 17 Pro simulator and ThanhNguyen's physical iPhone 16 Pro (iOS 26.4)
+  - ✅ Daily sugar summary endpoints (user + family member)
+  - ✅ Family member consumption history endpoint
   - 🔄 UI development ongoing — this session focuses on frontend
 - **Phase 2 (Smart)**: OCR scanning, ingredient parsing, family profiles, sugar budget
 - **Phase 3 (Intelligence)**: AI recommendations, fruit recognition, behavior insights

@@ -1,8 +1,12 @@
 package com.sugaradvisor.controller;
 
+import com.sugaradvisor.dto.DailySummaryResponse;
 import com.sugaradvisor.dto.FamilyMemberRequest;
 import com.sugaradvisor.dto.FamilyMemberResponse;
+import com.sugaradvisor.service.ConsumptionService;
 import com.sugaradvisor.service.FamilyMemberService;
+import com.sugaradvisor.service.SummaryService;
+import com.sugaradvisor.dto.ConsumptionResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,8 @@ import java.util.UUID;
 public class FamilyMemberController {
 
     private final FamilyMemberService familyMemberService;
+    private final ConsumptionService consumptionService;
+    private final SummaryService summaryService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,5 +59,21 @@ public class FamilyMemberController {
             @PathVariable UUID userId,
             @PathVariable UUID memberId) {
         return familyMemberService.delete(userId, memberId);
+    }
+
+    @GetMapping("/{memberId}/consumptions")
+    public Flux<ConsumptionResponse> getConsumptions(
+            @PathVariable UUID userId,
+            @PathVariable UUID memberId) {
+        return familyMemberService.getOne(userId, memberId)
+                .thenMany(consumptionService.getHistoryByFamilyMember(memberId))
+                .map(ConsumptionResponse::from);
+    }
+
+    @GetMapping("/{memberId}/summary/today")
+    public Mono<DailySummaryResponse> getSummaryToday(
+            @PathVariable UUID userId,
+            @PathVariable UUID memberId) {
+        return summaryService.getFamilyMemberSummaryToday(userId, memberId);
     }
 }

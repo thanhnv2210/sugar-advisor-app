@@ -21,6 +21,8 @@
 * [x] Integrate OpenFoodFacts (fallback when barcode not in local DB — free, no API key)
 * [x] User update API (PATCH /api/users/{id} — name, age, weight, dailySugarLimit)
 * [x] Family member API (CRUD under /api/users/{id}/family)
+* [x] Daily summary endpoint (GET /api/users/{id}/summary/today)
+* [x] Family member consumption + summary endpoints
 
 ---
 

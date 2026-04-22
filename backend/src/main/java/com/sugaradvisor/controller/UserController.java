@@ -1,8 +1,10 @@
 package com.sugaradvisor.controller;
 
+import com.sugaradvisor.dto.DailySummaryResponse;
 import com.sugaradvisor.dto.UserCreateRequest;
 import com.sugaradvisor.dto.UserResponse;
 import com.sugaradvisor.dto.UserUpdateRequest;
+import com.sugaradvisor.service.SummaryService;
 import com.sugaradvisor.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final SummaryService summaryService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,5 +38,10 @@ public class UserController {
             @PathVariable UUID userId,
             @Valid @RequestBody UserUpdateRequest request) {
         return userService.updateUser(userId, request).map(UserResponse::from);
+    }
+
+    @GetMapping("/{userId}/summary/today")
+    public Mono<DailySummaryResponse> getSummaryToday(@PathVariable UUID userId) {
+        return summaryService.getUserSummaryToday(userId);
     }
 }

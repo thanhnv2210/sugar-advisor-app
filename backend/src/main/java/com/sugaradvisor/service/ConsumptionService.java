@@ -33,8 +33,27 @@ public class ConsumptionService {
         return consumptionRepository.findByUserIdOrderByConsumedAtDesc(userId);
     }
 
+    public Flux<Consumption> getHistoryByFamilyMember(UUID familyMemberId) {
+        return consumptionRepository.findByFamilyMemberIdOrderByConsumedAtDesc(familyMemberId);
+    }
+
     public Mono<Double> getTodayTotal(UUID userId) {
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-        return consumptionRepository.sumSugarTodayByUserId(userId, startOfDay);
+        return consumptionRepository.sumSugarTodayByUserId(userId, startOfToday());
+    }
+
+    public Mono<Double> getTodayTotalByFamilyMember(UUID familyMemberId) {
+        return consumptionRepository.sumSugarTodayByFamilyMemberId(familyMemberId, startOfToday());
+    }
+
+    public Mono<Integer> getTodayCount(UUID userId) {
+        return consumptionRepository.countTodayByUserId(userId, startOfToday());
+    }
+
+    public Mono<Integer> getTodayCountByFamilyMember(UUID familyMemberId) {
+        return consumptionRepository.countTodayByFamilyMemberId(familyMemberId, startOfToday());
+    }
+
+    private LocalDateTime startOfToday() {
+        return LocalDate.now().atStartOfDay();
     }
 }
