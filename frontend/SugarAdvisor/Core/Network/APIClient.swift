@@ -81,6 +81,23 @@ class APIClient {
         }
     }
 
+    func delete(_ path: String) async throws {
+        let url = try makeURL(path)
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let code = (response as? HTTPURLResponse)?.statusCode
+            await APILogger.shared.log(method: "DELETE", url: url.absoluteString, requestBody: nil,
+                                       statusCode: code, responseBody: String(data: data, encoding: .utf8), error: nil)
+            try validate(response)
+        } catch {
+            await APILogger.shared.log(method: "DELETE", url: url.absoluteString, requestBody: nil,
+                                       statusCode: nil, responseBody: nil, error: error.localizedDescription)
+            throw error
+        }
+    }
+
     private func makeURL(_ path: String) throws -> URL {
         guard let url = URL(string: baseURL + path) else {
             throw APIError.invalidURL

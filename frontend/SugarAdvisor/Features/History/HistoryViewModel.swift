@@ -12,7 +12,16 @@ class HistoryViewModel: ObservableObject {
         errorMessage = nil
         defer { isLoading = false }
         do {
-            consumptions = try await APIClient.shared.get("/consumptions/\(userId)")
+            consumptions = try await APIClient.shared.get("/consumptions/\(userId)?size=100")
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    func delete(id: UUID, userId: UUID) async {
+        do {
+            try await APIClient.shared.delete("/consumptions/\(id)")
+            consumptions.removeAll { $0.id == id }
         } catch {
             errorMessage = error.localizedDescription
         }

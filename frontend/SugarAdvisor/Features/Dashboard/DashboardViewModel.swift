@@ -27,26 +27,20 @@ class DashboardViewModel: ObservableObject {
         errorMessage = nil
         defer { isLoading = false }
         do {
-            // Fetch summary and today's consumption list in parallel
+            let today = todayDateString()
             async let summaryResult: DailySummaryResponse = APIClient.shared.get("/users/\(userId)/summary/today")
-            async let consumptionsResult: [ConsumptionResponse] = APIClient.shared.get("/consumptions/\(userId)")
-            let (fetchedSummary, allConsumptions) = try await (summaryResult, consumptionsResult)
+            async let consumptionsResult: [ConsumptionResponse] = APIClient.shared.get("/consumptions/\(userId)?from=\(today)&to=\(today)&size=50")
+            let (fetchedSummary, fetchedConsumptions) = try await (summaryResult, consumptionsResult)
             summary = fetchedSummary
-            consumptions = todayOnly(allConsumptions)
+            consumptions = fetchedConsumptions
         } catch {
             errorMessage = error.localizedDescription
         }
     }
 
-    private func todayOnly(_ items: [ConsumptionResponse]) -> [ConsumptionResponse] {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let calendar = Calendar.current
-        return items.filter { item in
-            if let date = formatter.date(from: item.consumedAt) {
-                return calendar.isDateInToday(date)
-            }
-            return false
-        }
+    private func todayDateString() -> String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+        return fmt.string(from: Date())
     }
 }

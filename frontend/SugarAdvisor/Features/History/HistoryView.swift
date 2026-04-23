@@ -18,6 +18,16 @@ struct HistoryView: View {
                 } else {
                     List(vm.consumptions) { item in
                         HistoryRow(item: item)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    Task {
+                                        guard let userId = session.userId else { return }
+                                        await vm.delete(id: item.id, userId: userId)
+                                    }
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
                     }
                     .listStyle(.insetGrouped)
                 }
