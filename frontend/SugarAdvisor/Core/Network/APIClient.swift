@@ -3,9 +3,13 @@ import Foundation
 class APIClient {
     static let shared = APIClient()
 
-    // For simulator use localhost. For physical device, replace with your Mac's local IP.
-    // e.g. "http://192.168.1.x:8080/api"
-    private let baseURL = "http://192.168.1.3:8080/api"
+    static let defaultBaseURL = "http://192.168.1.3:8080/api"
+    private static let baseURLKey = "dev_base_url"
+
+    var baseURL: String {
+        get { UserDefaults.standard.string(forKey: Self.baseURLKey) ?? Self.defaultBaseURL }
+        set { UserDefaults.standard.set(newValue, forKey: Self.baseURLKey) }
+    }
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()

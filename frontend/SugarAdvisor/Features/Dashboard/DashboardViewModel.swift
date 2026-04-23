@@ -22,6 +22,12 @@ class DashboardViewModel: ObservableObject {
         }
     }
 
+    func logManual(userId: UUID, sugarAmount: Double) async throws {
+        let request = ConsumptionRequest(userId: userId, productId: nil, sugarAmount: sugarAmount)
+        let _: ConsumptionResponse = try await APIClient.shared.post("/consumptions", body: request)
+        await load(userId: userId)
+    }
+
     func load(userId: UUID) async {
         isLoading = true
         errorMessage = nil

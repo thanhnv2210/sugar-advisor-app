@@ -50,7 +50,7 @@ SugarAdvisor/
 │   └── ContentView.swift       TabView (Dashboard / Scan / History / Profile)
 ├── Core/
 │   ├── Network/
-│   │   └── APIClient.swift     URLSession wrapper (GET, POST, PATCH) with request/response logging
+│   │   └── APIClient.swift     URLSession wrapper (GET, POST, PATCH, DELETE) with request/response logging
 │   ├── Models/
 │   │   └── Models.swift        Codable request/response types
 │   ├── Session/
@@ -62,7 +62,7 @@ SugarAdvisor/
     ├── Launch/
     │   └── LaunchView.swift    shown while bootstrapping user session
     ├── Dashboard/
-    │   ├── DashboardView.swift   today's sugar total, progress bar, intake list
+    │   ├── DashboardView.swift   today's sugar total, progress bar, intake list, manual log sheet
     │   └── DashboardViewModel.swift
     ├── Scan/
     │   ├── ScanView.swift           barcode input + camera scanner, product info, log consumption
@@ -75,6 +75,56 @@ SugarAdvisor/
         ├── ProfileView.swift        edit name, age, weight, daily sugar limit with preset buttons
         └── ProfileViewModel.swift   GET + PATCH /api/users/{userId}
 ```
+
+## CLI Build & Deploy
+
+All commands run from the `frontend/` directory.
+
+### Simulator
+
+```bash
+# Build
+xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor \
+  -destination 'platform=iOS Simulator,id=E72627DD-965B-4FFA-B203-5E882C023491' build
+
+# Install
+xcrun simctl install E72627DD-965B-4FFA-B203-5E882C023491 \
+  ~/Library/Developer/Xcode/DerivedData/SugarAdvisor-*/Build/Products/Debug-iphonesimulator/SugarAdvisor.app
+
+# Launch
+xcrun simctl launch E72627DD-965B-4FFA-B203-5E882C023491 thanh.nguyen.SugarAdvisor
+```
+
+### Physical Device (ThanhNguyen iPhone 16 Pro — iOS 26.4)
+
+```bash
+# Build
+xcodebuild -project SugarAdvisor.xcodeproj -scheme SugarAdvisor \
+  -destination 'platform=iOS,id=00008140-00065D441180801C' -allowProvisioningUpdates build
+
+# Install
+xcrun devicectl device install app --device 27B7E6F4-2F84-5CFB-A858-A31ECD350909 \
+  ~/Library/Developer/Xcode/DerivedData/SugarAdvisor-*/Build/Products/Debug-iphoneos/SugarAdvisor.app
+
+# Launch
+xcrun devicectl device process launch --device 27B7E6F4-2F84-5CFB-A858-A31ECD350909 \
+  thanh.nguyen.SugarAdvisor
+```
+
+> **Note:** The "No provider was found" warning during install/launch is harmless — it's a provisioning profile lookup quirk and does not affect the app.
+
+### Useful identifiers
+
+| Item | Value |
+|------|-------|
+| Simulator UDID | `E72627DD-965B-4FFA-B203-5E882C023491` |
+| Device UDID (xcodebuild) | `00008140-00065D441180801C` |
+| Device UDID (devicectl) | `27B7E6F4-2F84-5CFB-A858-A31ECD350909` |
+| Bundle ID | `thanh.nguyen.SugarAdvisor` |
+| Team ID | `R6B94B8A4D` |
+| Signing | Xcode 26.4.1+ required (`sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`) |
+
+---
 
 ## Start, Stop & Debug
 
@@ -130,12 +180,16 @@ SugarAdvisor/
 First launch → POST /api/users → store UUID in UserDefaults
      ↓
 Tab Bar
- ├── Dashboard  → GET /api/consumptions/{userId} → show today's total vs daily limit
+ ├── Dashboard  → GET /api/users/{userId}/summary/today  (sugar total, limit, remaining, status)
+ │             → GET /api/consumptions/{userId}?from=today&to=today  (today's list)
+ │             → [+] button → LogIntakeSheet
+ │                            → POST /api/consumptions  (productId: nil, manual sugar amount)
  ├── Scan       → camera scanner or manual barcode entry
- │               → GET /api/products/barcode/{barcode}
- │               → POST /api/consumptions
- │               → POST /api/analysis/sugar → show recommendation
- ├── History    → GET /api/consumptions/{userId} → full list
+ │             → GET /api/products/barcode/{barcode}
+ │             → POST /api/consumptions
+ │             → POST /api/analysis/sugar → show recommendation
+ ├── History    → GET /api/consumptions/{userId}?size=100  (full list, newest first)
+ │             → swipe left on row → DELETE /api/consumptions/{id}
  └── Profile    → GET /api/users/{userId} → display profile
-                → PATCH /api/users/{userId} → save name, age, weight, daily limit
+               → PATCH /api/users/{userId} → save name, age, weight, daily limit
 ```

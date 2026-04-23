@@ -1,9 +1,12 @@
 import SwiftUI
+import UIKit
 
 struct DebugLogView: View {
     @ObservedObject private var logger = APILogger.shared
     @Environment(\.dismiss) private var dismiss
     @State private var selectedEntry: APILogEntry?
+    @State private var shareItem: ShareableText?
+    @State private var showingServerConfig = false
 
     var body: some View {
         NavigationStack {
@@ -26,6 +29,17 @@ struct DebugLogView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    Button { shareItem = ShareableText(logger.exportText()) } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .disabled(logger.entries.isEmpty)
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showingServerConfig = true } label: {
+                        Image(systemName: "server.rack")
+                    }
+                }
                 ToolbarItem(placement: .destructiveAction) {
                     Button("Clear") { logger.clear() }
                         .foregroundColor(.red)
@@ -34,6 +48,12 @@ struct DebugLogView: View {
             }
             .sheet(item: $selectedEntry) { entry in
                 EntryDetailView(entry: entry)
+            }
+            .sheet(item: $shareItem) { item in
+                ShareSheet(items: [item.value])
+            }
+            .sheet(isPresented: $showingServerConfig) {
+                ServerConfigSheet()
             }
         }
     }
@@ -104,6 +124,68 @@ struct DebugLogView: View {
         default: return .purple
         }
     }
+}
+
+// MARK: - Server Config Sheet
+
+struct ServerConfigSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var urlText = APIClient.shared.baseURL
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("http://192.168.x.x:8080/api", text: $urlText)
+                        .keyboardType(.URL)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                } header: {
+                    Text("Backend base URL")
+                } footer: {
+                    Text("Default: \(APIClient.defaultBaseURL)\nChange takes effect on the next API call.")
+                }
+
+                Section {
+                    Button("Reset to default") {
+                        urlText = APIClient.defaultBaseURL
+                    }
+                    .foregroundColor(.orange)
+                }
+            }
+            .navigationTitle("Server")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        APIClient.shared.baseURL = urlText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        dismiss()
+                    }
+                    .disabled(urlText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+            }
+        }
+        .presentationDetents([.medium])
+    }
+}
+
+// MARK: - Share helpers
+
+struct ShareableText: Identifiable {
+    let id = UUID()
+    let value: String
+    init(_ value: String) { self.value = value }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 // MARK: - Detail View

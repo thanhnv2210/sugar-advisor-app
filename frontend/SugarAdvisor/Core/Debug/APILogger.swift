@@ -46,4 +46,26 @@ class APILogger: ObservableObject {
     }
 
     func clear() { entries.removeAll() }
+
+    func exportText() -> String {
+        let header = "Sugar Advisor — API Log\nExported: \(Date())\n" + String(repeating: "=", count: 60)
+        let body = entries.map { e -> String in
+            var lines: [String] = []
+            lines.append("\n[\(e.formattedTime)] \(e.method) \(e.url)")
+            if let code = e.statusCode { lines.append("Status : \(code)") }
+            if let req  = e.requestBody  { lines.append("Request:\n\(prettyPrint(req))") }
+            if let res  = e.responseBody { lines.append("Response:\n\(prettyPrint(res))") }
+            if let err  = e.error        { lines.append("Error  : \(err)") }
+            return lines.joined(separator: "\n")
+        }.joined(separator: "\n" + String(repeating: "-", count: 60))
+        return header + body
+    }
+
+    private func prettyPrint(_ raw: String) -> String {
+        guard let data = raw.data(using: .utf8),
+              let obj  = try? JSONSerialization.jsonObject(with: data),
+              let pretty = try? JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted),
+              let str  = String(data: pretty, encoding: .utf8) else { return raw }
+        return str
+    }
 }
