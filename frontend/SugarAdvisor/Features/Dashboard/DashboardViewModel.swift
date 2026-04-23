@@ -12,7 +12,7 @@ class DashboardViewModel: ObservableObject {
     var totalSugarToday: Double { summary?.totalSugar ?? 0 }
     var dailyLimit: Double { summary?.dailyLimit ?? 50 }
     var remaining: Double { max(summary?.remaining ?? 50, 0) }
-    var isExceeded: Bool { (summary?.status ?? "") == "EXCEEDED" }
+    var isExceeded: Bool { (summary?.remaining ?? 50) <= 0 }
     var progress: Double { min(totalSugarToday / max(dailyLimit, 1), 1.0) }
     var progressColor: Color {
         switch progress {

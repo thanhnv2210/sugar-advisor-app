@@ -19,7 +19,6 @@ class APIClient {
 
     private let encoder: JSONEncoder = {
         let e = JSONEncoder()
-        e.keyEncodingStrategy = .convertToSnakeCase
         return e
     }()
 

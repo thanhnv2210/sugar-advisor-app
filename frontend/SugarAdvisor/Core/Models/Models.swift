@@ -52,7 +52,8 @@ struct DailySummaryResponse: Decodable {
     let totalSugar: Double
     let dailyLimit: Double
     let remaining: Double
-    let status: String          // e.g. "WITHIN_LIMIT" / "EXCEEDED"
+    let sugarStatus: String     // e.g. "LOW" / "MEDIUM" / "HIGH"
+    let itemCount: Int
 }
 
 // MARK: - Analysis
