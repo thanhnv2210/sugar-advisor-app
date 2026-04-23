@@ -123,9 +123,10 @@ liquibase --defaults-file=src/main/resources/liquibase.properties update
 | PUT | `/api/users/{userId}/family/{memberId}` | Update member |
 | DELETE | `/api/users/{userId}/family/{memberId}` | Remove member |
 | POST | `/api/consumptions` | Record consumption |
-| GET | `/api/consumptions/{userId}` | Get consumption history |
+| DELETE | `/api/consumptions/{consumptionId}` | Delete a consumption entry (404 if not found) |
+| GET | `/api/consumptions/{userId}` | Get consumption history (params: `page`, `size`, `from`, `to`) |
 | GET | `/api/users/{userId}/summary/today` | Daily sugar summary (total, limit, remaining, status) |
-| GET | `/api/users/{userId}/family/{memberId}/consumptions` | Consumption history for a family member |
+| GET | `/api/users/{userId}/family/{memberId}/consumptions` | Consumption history for a family member (same params as above) |
 | GET | `/api/users/{userId}/family/{memberId}/summary/today` | Daily sugar summary for a family member |
 
 ## Important Implementation Notes

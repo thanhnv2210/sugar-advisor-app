@@ -1,6 +1,7 @@
 package com.sugaradvisor.repository;
 
 import com.sugaradvisor.domain.Consumption;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
@@ -13,9 +14,13 @@ import java.util.UUID;
 @Repository
 public interface ConsumptionRepository extends ReactiveCrudRepository<Consumption, UUID> {
 
-    Flux<Consumption> findByUserIdOrderByConsumedAtDesc(UUID userId);
+    Flux<Consumption> findByUserIdOrderByConsumedAtDesc(UUID userId, Pageable pageable);
 
-    Flux<Consumption> findByFamilyMemberIdOrderByConsumedAtDesc(UUID familyMemberId);
+    Flux<Consumption> findByUserIdAndConsumedAtBetweenOrderByConsumedAtDesc(UUID userId, LocalDateTime from, LocalDateTime to, Pageable pageable);
+
+    Flux<Consumption> findByFamilyMemberIdOrderByConsumedAtDesc(UUID familyMemberId, Pageable pageable);
+
+    Flux<Consumption> findByFamilyMemberIdAndConsumedAtBetweenOrderByConsumedAtDesc(UUID familyMemberId, LocalDateTime from, LocalDateTime to, Pageable pageable);
 
     @Query("SELECT COALESCE(SUM(sugar_amount), 0) FROM sugar_advisor.consumptions WHERE user_id = :userId AND consumed_at >= :startOfDay")
     Mono<Double> sumSugarTodayByUserId(UUID userId, LocalDateTime startOfDay);

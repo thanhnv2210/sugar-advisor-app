@@ -23,6 +23,9 @@
 * [x] Family member API (CRUD under /api/users/{id}/family)
 * [x] Daily summary endpoint (GET /api/users/{id}/summary/today)
 * [x] Family member consumption + summary endpoints
+* [x] DELETE /api/consumptions/{id} — remove a logged item
+* [x] Pagination for consumption history (?page=0&size=20)
+* [x] Date range filter for consumption history (?from=YYYY-MM-DD&to=YYYY-MM-DD)
 
 ---
 

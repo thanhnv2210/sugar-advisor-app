@@ -1,5 +1,6 @@
 package com.sugaradvisor.config;
 
+import com.sugaradvisor.service.ConsumptionService;
 import com.sugaradvisor.service.FamilyMemberService;
 import com.sugaradvisor.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductService.ProductNotFoundException.class)
     public ProblemDetail handleProductNotFound(ProductService.ProductNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ConsumptionService.ConsumptionNotFoundException.class)
+    public ProblemDetail handleConsumptionNotFound(ConsumptionService.ConsumptionNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 

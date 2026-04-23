@@ -4,6 +4,8 @@ import com.sugaradvisor.domain.Consumption;
 import com.sugaradvisor.dto.ConsumptionRequest;
 import com.sugaradvisor.repository.ConsumptionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,12 +31,26 @@ public class ConsumptionService {
         return consumptionRepository.save(consumption);
     }
 
-    public Flux<Consumption> getHistory(UUID userId) {
-        return consumptionRepository.findByUserIdOrderByConsumedAtDesc(userId);
+    public Mono<Void> delete(UUID consumptionId) {
+        return consumptionRepository.findById(consumptionId)
+                .switchIfEmpty(Mono.error(new ConsumptionNotFoundException(consumptionId)))
+                .flatMap(c -> consumptionRepository.deleteById(consumptionId));
     }
 
-    public Flux<Consumption> getHistoryByFamilyMember(UUID familyMemberId) {
-        return consumptionRepository.findByFamilyMemberIdOrderByConsumedAtDesc(familyMemberId);
+    public Flux<Consumption> getHistory(UUID userId, LocalDate from, LocalDate to, Pageable pageable) {
+        if (from != null && to != null) {
+            return consumptionRepository.findByUserIdAndConsumedAtBetweenOrderByConsumedAtDesc(
+                    userId, from.atStartOfDay(), to.atTime(23, 59, 59), pageable);
+        }
+        return consumptionRepository.findByUserIdOrderByConsumedAtDesc(userId, pageable);
+    }
+
+    public Flux<Consumption> getHistoryByFamilyMember(UUID familyMemberId, LocalDate from, LocalDate to, Pageable pageable) {
+        if (from != null && to != null) {
+            return consumptionRepository.findByFamilyMemberIdAndConsumedAtBetweenOrderByConsumedAtDesc(
+                    familyMemberId, from.atStartOfDay(), to.atTime(23, 59, 59), pageable);
+        }
+        return consumptionRepository.findByFamilyMemberIdOrderByConsumedAtDesc(familyMemberId, pageable);
     }
 
     public Mono<Double> getTodayTotal(UUID userId) {
@@ -55,5 +71,11 @@ public class ConsumptionService {
 
     private LocalDateTime startOfToday() {
         return LocalDate.now().atStartOfDay();
+    }
+
+    public static class ConsumptionNotFoundException extends RuntimeException {
+        public ConsumptionNotFoundException(UUID id) {
+            super("Consumption not found: " + id);
+        }
     }
 }

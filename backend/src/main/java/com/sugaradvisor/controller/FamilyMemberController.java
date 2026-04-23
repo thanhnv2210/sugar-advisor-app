@@ -9,11 +9,13 @@ import com.sugaradvisor.service.SummaryService;
 import com.sugaradvisor.dto.ConsumptionResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -64,9 +66,13 @@ public class FamilyMemberController {
     @GetMapping("/{memberId}/consumptions")
     public Flux<ConsumptionResponse> getConsumptions(
             @PathVariable UUID userId,
-            @PathVariable UUID memberId) {
+            @PathVariable UUID memberId,
+            @RequestParam(required = false) LocalDate from,
+            @RequestParam(required = false) LocalDate to,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
         return familyMemberService.getOne(userId, memberId)
-                .thenMany(consumptionService.getHistoryByFamilyMember(memberId))
+                .thenMany(consumptionService.getHistoryByFamilyMember(memberId, from, to, PageRequest.of(page, size)))
                 .map(ConsumptionResponse::from);
     }
 

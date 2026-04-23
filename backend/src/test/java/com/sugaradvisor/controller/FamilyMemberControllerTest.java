@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(FamilyMemberController.class)
@@ -130,7 +131,7 @@ class FamilyMemberControllerTest {
                 .id(UUID.randomUUID()).userId(USER_ID).familyMemberId(MEMBER_ID)
                 .sugarAmount(BigDecimal.valueOf(8)).consumedAt(LocalDateTime.now()).build();
         when(familyMemberService.getOne(USER_ID, MEMBER_ID)).thenReturn(Mono.just(sampleMember()));
-        when(consumptionService.getHistoryByFamilyMember(MEMBER_ID)).thenReturn(Flux.just(c));
+        when(consumptionService.getHistoryByFamilyMember(eq(MEMBER_ID), isNull(), isNull(), any())).thenReturn(Flux.just(c));
 
         webClient.get().uri("/api/users/{userId}/family/{memberId}/consumptions", USER_ID, MEMBER_ID)
                 .exchange()
