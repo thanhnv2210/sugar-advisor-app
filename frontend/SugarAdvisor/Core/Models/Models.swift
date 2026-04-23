@@ -47,6 +47,14 @@ struct ConsumptionResponse: Decodable, Identifiable {
     let consumedAt: String
 }
 
+// MARK: - Daily Summary
+struct DailySummaryResponse: Decodable {
+    let totalSugar: Double
+    let dailyLimit: Double
+    let remaining: Double
+    let status: String          // e.g. "WITHIN_LIMIT" / "EXCEEDED"
+}
+
 // MARK: - Analysis
 struct SugarAnalysisRequest: Encodable {
     let userId: UUID

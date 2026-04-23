@@ -163,7 +163,9 @@ Common issues and fixes in `backend/docs/troubleshooting/`:
   - ✅ Daily sugar summary endpoints (user + family member)
   - ✅ Family member consumption history endpoint
   - 🔄 UI development ongoing — this session focuses on frontend
-- **Phase 2 (Smart)**: OCR scanning, ingredient parsing, family profiles, sugar budget
+- **Phase 2 (Smart)**: OCR scanning, ingredient parsing, sugar budget
+  - **Backlog**: Family member UI (APIs are ready on backend — need request/response shapes + UI flow decision before starting)
+  - **Backlog**: History date grouping + filters (client-side, no backend needed)
 - **Phase 3 (Intelligence)**: AI recommendations, fruit recognition, behavior insights
 
 Development order: Backend-first → API-driven → Incremental UI → AI integration last.

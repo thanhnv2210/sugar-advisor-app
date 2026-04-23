@@ -5,13 +5,15 @@ import SwiftUI
 @MainActor
 class DashboardViewModel: ObservableObject {
     @Published var consumptions: [ConsumptionResponse] = []
-    @Published var totalSugarToday: Double = 0
-    @Published var dailyLimit: Double = 50
+    @Published var summary: DailySummaryResponse?
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    var remaining: Double { max(dailyLimit - totalSugarToday, 0) }
-    var progress: Double { min(totalSugarToday / dailyLimit, 1.0) }
+    var totalSugarToday: Double { summary?.totalSugar ?? 0 }
+    var dailyLimit: Double { summary?.dailyLimit ?? 50 }
+    var remaining: Double { max(summary?.remaining ?? 50, 0) }
+    var isExceeded: Bool { (summary?.status ?? "") == "EXCEEDED" }
+    var progress: Double { min(totalSugarToday / max(dailyLimit, 1), 1.0) }
     var progressColor: Color {
         switch progress {
         case ..<0.5: return .green
@@ -25,9 +27,12 @@ class DashboardViewModel: ObservableObject {
         errorMessage = nil
         defer { isLoading = false }
         do {
-            let all: [ConsumptionResponse] = try await APIClient.shared.get("/consumptions/\(userId)")
-            consumptions = todayOnly(all)
-            totalSugarToday = consumptions.reduce(0) { $0 + $1.sugarAmount }
+            // Fetch summary and today's consumption list in parallel
+            async let summaryResult: DailySummaryResponse = APIClient.shared.get("/users/\(userId)/summary/today")
+            async let consumptionsResult: [ConsumptionResponse] = APIClient.shared.get("/consumptions/\(userId)")
+            let (fetchedSummary, allConsumptions) = try await (summaryResult, consumptionsResult)
+            summary = fetchedSummary
+            consumptions = todayOnly(allConsumptions)
         } catch {
             errorMessage = error.localizedDescription
         }

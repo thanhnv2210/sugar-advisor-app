@@ -39,9 +39,15 @@ struct DashboardView: View {
                 .scaleEffect(x: 1, y: 2)
 
             HStack {
-                Label("\(vm.remaining, specifier: "%.1f")g remaining", systemImage: "checkmark.circle.fill")
-                    .foregroundColor(.green)
-                    .font(.subheadline)
+                if vm.isExceeded {
+                    Label("Daily limit exceeded!", systemImage: "exclamationmark.triangle.fill")
+                        .foregroundColor(.red)
+                        .font(.subheadline)
+                } else {
+                    Label("\(vm.remaining, specifier: "%.1f")g remaining", systemImage: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                        .font(.subheadline)
+                }
                 Spacer()
             }
         }
